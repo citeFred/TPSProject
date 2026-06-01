@@ -49,6 +49,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	class UInputAction* ia_Move;
 
+	// 키보드 점프 IA 필드 선언
+	UPROPERTY(EditDefaultsOnly, Category = Input)
+	class UInputAction* ia_Jump;
+	
 	// 이동 속도
 	UPROPERTY(EditDefaultsOnly, Category = PlayerSetting)
 	float walkSpeed = 600.f;
@@ -64,4 +68,7 @@ public:
 	
 	// 전후좌우 이동 입력 함수 선언
 	void Move(const struct FInputActionValue& inputValue);
+	
+	// 점프 입력 함수 선언
+	void InputJump(const struct FInputActionValue& inputValue);
 };
