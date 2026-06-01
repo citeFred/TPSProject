@@ -51,6 +51,14 @@ void ATPSPlayer::BeginPlay()
 void ATPSPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	// 플레이어 이동 처리
+	// P결과위치 = P0초기위치 + v속도 * t시간
+	FVector P0 = GetActorLocation();
+	FVector vt = direction * walkSpeed * DeltaTime;
+	FVector P = P0 + vt;
+	SetActorLocation(P);
+	direction = FVector::ZeroVector;
 }
 
 // Called to bind functionality to input
@@ -63,6 +71,7 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	{
 		PlayerInput->BindAction(ia_LookUp, ETriggerEvent::Triggered, this, &ATPSPlayer::LookUp);
 		PlayerInput->BindAction(ia_Turn, ETriggerEvent::Triggered, this, &ATPSPlayer::Turn);
+		PlayerInput->BindAction(ia_Move, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
 	}
 }
 
@@ -78,4 +87,12 @@ void ATPSPlayer::Turn(const FInputActionValue& inputValue)
 {
 	float value = inputValue.Get<float>();
 	AddControllerYawInput(value); // YAW(Z축) 회전
+}
+
+// 전후좌우 이동 입력에 따른 콜백 함수 구현
+void ATPSPlayer::Move(const FInputActionValue& inputValue)
+{
+	FVector2D value = inputValue.Get<FVector2D>(); // 전달받는 2D 값
+	direction.X = value.X; // 전후
+	direction.Y = value.Y; // 좌우
 }
