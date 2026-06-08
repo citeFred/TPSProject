@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InterchangeResult.h"
 #include "SWarningOrErrorBox.h"
+#include "TPSPlayerAnim.h"
 #include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "EditorState/EditorState.h"
@@ -195,6 +196,14 @@ void ATPSPlayer::InputJump(const FInputActionValue& inputValue)
 
 void ATPSPlayer::InputFire(const FInputActionValue& inputValue)
 {
+	// 발사 동작 몽타주를 재생(유탄/스나 공통)
+	// 애니메이션 재생 책임은 AnimInstance가 담당 / 여기선 호출만
+	auto anim = Cast<UTPSPlayerAnim>(GetMesh()->GetAnimInstance());
+	if (anim)
+	{
+		anim->PlayerAttackAnim();
+	}
+	
 	if (bUsingGrenadeGun)
 	{
 		// 유탄총을 사용하는 경우
